@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "zhrreport"
+version = "1.2.0"
+description = "Generate evidence-based per-speaker Markdown and DOCX reports from audio or transcripts"
+requires-python = ">=3.9"
+readme = "README.md"
+license = { text = "MIT" }
+keywords = ["transcript", "report", "speech", "diarization", "meeting", "copilot", "faster-whisper"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+
+[project.urls]
+Homepage = "https://github.com/550YU/employee-report-analyzer"
+Repository = "https://github.com/550YU/employee-report-analyzer"
+Issues = "https://github.com/550YU/employee-report-analyzer/issues"
+
+# No mandatory runtime dependencies — everything uses the stdlib.
+# Optional extras for production use:
+dependencies = []
+
+[project.optional-dependencies]
+# Production ASR backends
+faster-whisper = ["faster-whisper", "imageio-ffmpeg"]
+# Local diarization — lightweight fallback (always works with numpy)
+diarize-numpy  = ["numpy", "imageio-ffmpeg"]
+# Local diarization — high quality speaker embeddings (large install)
+diarize-speechbrain = ["speechbrain", "torch", "scikit-learn", "imageio-ffmpeg"]
+# Local diarization — highest quality, needs HuggingFace token
+diarize-pyannote = ["pyannote.audio", "imageio-ffmpeg"]
+# All real-audio features
+audio = ["faster-whisper", "numpy", "imageio-ffmpeg"]
+# Development
+dev = ["pytest"]
+
+[project.scripts]
+zhrreport = "zhrreport.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["zhrreport*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
